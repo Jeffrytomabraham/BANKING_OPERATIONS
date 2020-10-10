@@ -12,7 +12,7 @@ import lombok.Setter;
 public class UpdatedAccountDetails {
 
 	private String accountNumber;
-	private Number balance;
+	private double balance;
 	private boolean isSuccess;
 	private ErrorResponse error;
 }

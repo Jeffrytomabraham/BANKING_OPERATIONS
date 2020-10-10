@@ -24,7 +24,7 @@ import com.banking.operations.util.ValidationMessages;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/banking/operations/")
+@RequestMapping("/banking/operations")
 public class BankingOperationsController {
 	
 	private Log log = LogFactory.getLog(BankingOperationsController.class);
@@ -45,6 +45,7 @@ public class BankingOperationsController {
 	@ApiOperation(value = "Debit customer account")
 	public @ResponseBody ResponseEntity<?> debitOperation(@Valid @RequestBody DebitRequestDTO debitRequestDTO){
 		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
+		HttpStatus httpStatus = HttpStatus.OK;
 		try {
 			updatedAccountDetails = bankingOperationsComponent.debitAccount(debitRequestDTO);
 		} catch (AccountDebitException e) {
@@ -53,8 +54,9 @@ public class BankingOperationsController {
 			error.setErrorCode(ValidationMessages.LOW_BALANCE.getCode());
 			error.setMessage(e.getMessage());
 			updatedAccountDetails.setError(error);
+			httpStatus = HttpStatus.BAD_REQUEST;
 		}
-		return new ResponseEntity<>(updatedAccountDetails,HttpStatus.OK);
+		return new ResponseEntity<>(updatedAccountDetails,httpStatus);
 	}		
 
 }

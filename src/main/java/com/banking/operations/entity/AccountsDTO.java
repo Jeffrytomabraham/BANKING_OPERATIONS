@@ -13,7 +13,7 @@ public class AccountsDTO {
 
 	private String accountType;
 	private String accountNumber;
-	private Number balance;
+	private double balance;
 	private LocalDateTime creationDate;
-	private Number dueAmount;
+	private double dueAmount;
 }

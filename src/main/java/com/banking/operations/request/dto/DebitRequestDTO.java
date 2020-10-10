@@ -11,5 +11,5 @@ public class DebitRequestDTO {
 
 	private String username;
 	private String accountNumber;
-	private Number creditAmount;
+	private double debitAmount;
 }

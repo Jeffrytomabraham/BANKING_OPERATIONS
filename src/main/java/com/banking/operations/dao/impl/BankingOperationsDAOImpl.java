@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import com.banking.operations.dao.BankingOperationsDAO;
-import com.banking.operations.entity.OperationsEntity;
+import com.banking.operations.entity.UserDetailsEntityDTO;
 
 @Component
 public class BankingOperationsDAOImpl implements BankingOperationsDAO{
@@ -21,24 +21,24 @@ public class BankingOperationsDAOImpl implements BankingOperationsDAO{
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
-	public OperationsEntity findUserByUserName(String userName) {
+	public UserDetailsEntityDTO findUserByUserName(String userName) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("userName").is(userName));
-		List<OperationsEntity> userDetails= mongoTemplate.find(query, OperationsEntity.class);
+		List<UserDetailsEntityDTO> userDetails= mongoTemplate.find(query, UserDetailsEntityDTO.class);
 		if(userDetails.size()>0) {
 			return userDetails.get(0);
 		} else {
-			return new OperationsEntity();
+			return new UserDetailsEntityDTO();
 		}
 	}
 	
-	public OperationsEntity updateAccountDetails(OperationsEntity operationsEntity) {
+	public UserDetailsEntityDTO updateAccountDetails(UserDetailsEntityDTO userDetails) {
 		log.info("Updating user data");
-		log.debug("Entering BankingOperationsDAOImpl.updateAccountDetails for updating user -"+operationsEntity.getUserName());
+		log.debug("Entering BankingOperationsDAOImpl.updateAccountDetails for updating user -"+userDetails.getUserName());
 		
-		OperationsEntity savedUserDetails= mongoTemplate.save(operationsEntity);
+		UserDetailsEntityDTO savedUserDetails= mongoTemplate.save(userDetails);
 		
-		log.debug("Exiting BankingOperationsDAOImpl.updateAccountDetails after updating user -"+operationsEntity.getUserName());
+		log.debug("Exiting BankingOperationsDAOImpl.updateAccountDetails after updating user -"+userDetails.getUserName());
 		log.info("User data saved");
 		return savedUserDetails;
 	}

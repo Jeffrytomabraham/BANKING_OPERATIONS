@@ -13,5 +13,5 @@ public class CreditRequestDTO {
 
 	private String username;
 	private String accountNumber;
-	private Number creditAmount;
+	private double creditAmount;
 }

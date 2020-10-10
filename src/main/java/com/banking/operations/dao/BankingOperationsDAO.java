@@ -1,11 +1,11 @@
 package com.banking.operations.dao;
 
-import com.banking.operations.entity.OperationsEntity;
+import com.banking.operations.entity.UserDetailsEntityDTO;
 
 public interface BankingOperationsDAO {
 
-	public OperationsEntity findUserByUserName(String userName);
+	public UserDetailsEntityDTO findUserByUserName(String userName);
 	
-	public OperationsEntity updateAccountDetails(OperationsEntity operationsEntity);
+	public UserDetailsEntityDTO updateAccountDetails(UserDetailsEntityDTO userDetails);
 	
 }
