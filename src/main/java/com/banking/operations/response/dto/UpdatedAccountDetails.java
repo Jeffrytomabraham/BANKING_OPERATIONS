@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdatedAccountDetails {
 
-	private String accountType;
-	private String balance;
-	private String isSuccess;
-	private LocalDateTime createdDate;
+	private String accountNumber;
+	private Number balance;
+	private boolean isSuccess;
+	private ErrorResponse error;
 }
