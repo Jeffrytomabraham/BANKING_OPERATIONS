@@ -20,9 +20,7 @@ public class BankingOperationsComponent {
 	}
 	
 	public UpdatedAccountDetails debitAccount(DebitRequestDTO debitRequestDTO) throws AccountDebitException{
-		
-			return bankingOperationsService.debitAccount(debitRequestDTO);
-		
+		return bankingOperationsService.debitAccount(debitRequestDTO);	
 	}
 	 
 }

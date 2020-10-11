@@ -45,18 +45,16 @@ public class BankingOperationsController {
 	@ApiOperation(value = "Debit customer account")
 	public @ResponseBody ResponseEntity<?> debitOperation(@Valid @RequestBody DebitRequestDTO debitRequestDTO){
 		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
-		HttpStatus httpStatus = HttpStatus.OK;
 		try {
 			updatedAccountDetails = bankingOperationsComponent.debitAccount(debitRequestDTO);
 		} catch (AccountDebitException e) {
-			updatedAccountDetails.setSuccess(false);
+			updatedAccountDetails.setHttpStatus(HttpStatus.BAD_REQUEST);
 			ErrorResponse error = new ErrorResponse();
 			error.setErrorCode(ValidationMessages.LOW_BALANCE.getCode());
 			error.setMessage(e.getMessage());
 			updatedAccountDetails.setError(error);
-			httpStatus = HttpStatus.BAD_REQUEST;
 		}
-		return new ResponseEntity<>(updatedAccountDetails,httpStatus);
+		return new ResponseEntity<>(updatedAccountDetails,HttpStatus.OK);
 	}		
 
 }

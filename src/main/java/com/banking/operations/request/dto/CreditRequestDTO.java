@@ -1,5 +1,7 @@
 package com.banking.operations.request.dto;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
