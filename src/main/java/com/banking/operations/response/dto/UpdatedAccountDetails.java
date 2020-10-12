@@ -13,8 +13,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdatedAccountDetails {
 
+	private String accountType;
 	private String accountNumber;
 	private double balance;
-	private HttpStatus httpStatus;
+	private LocalDateTime creationDate;
+	private double dueAmount;
 	private ErrorResponse error;
 }

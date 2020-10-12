@@ -1,25 +1,21 @@
 package com.banking.operations.controller;
 
-import javax.validation.Valid;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banking.operations.component.BankingOperationsComponent;
-import com.banking.operations.exception.AccountDebitException;
 import com.banking.operations.request.dto.CreditRequestDTO;
 import com.banking.operations.request.dto.DebitRequestDTO;
-import com.banking.operations.response.dto.ErrorResponse;
+import com.banking.operations.request.dto.ViewAccountDTO;
 import com.banking.operations.response.dto.UpdatedAccountDetails;
-import com.banking.operations.util.ValidationMessages;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -32,31 +28,40 @@ public class BankingOperationsController {
 	@Autowired
 	BankingOperationsComponent bankingOperationsComponent;
 	
-	@RequestMapping(value= {"/credit"},method = RequestMethod.POST,
+	@PostMapping(value= {"/credit"},
 			consumes="application/json",produces="application/json")
 	@ApiOperation(value = "Add credit to account")
-	public @ResponseBody ResponseEntity<?> creditOperation(@Valid @RequestBody CreditRequestDTO creditRequestDTO){
+	public @ResponseBody ResponseEntity<?> creditOperation(@RequestBody CreditRequestDTO creditRequestDTO){
 		UpdatedAccountDetails updatedAccountDetails = bankingOperationsComponent.creditAccount(creditRequestDTO);
-		return new ResponseEntity<>(updatedAccountDetails,HttpStatus.OK);
+		HttpStatus status = HttpStatus.OK;
+		if(updatedAccountDetails.getError()!=null) {
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return new ResponseEntity<>(updatedAccountDetails,status);
 	}
 	
-	@RequestMapping(value= {"/debit"},method = RequestMethod.POST,
+	@PostMapping(value= {"/debit"},
 			consumes="application/json",produces="application/json")
 	@ApiOperation(value = "Debit customer account")
-	public @ResponseBody ResponseEntity<?> debitOperation(@Valid @RequestBody DebitRequestDTO debitRequestDTO){
-		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
+	public @ResponseBody ResponseEntity<?> debitOperation(@RequestBody DebitRequestDTO debitRequestDTO){
 		HttpStatus status = HttpStatus.OK;
-		try {
-			updatedAccountDetails = bankingOperationsComponent.debitAccount(debitRequestDTO);
-		} catch (AccountDebitException e) {
-			updatedAccountDetails.setHttpStatus(HttpStatus.BAD_REQUEST);
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.LOW_BALANCE.getCode());
-			error.setMessage(e.getMessage());
-			updatedAccountDetails.setError(error);
+		UpdatedAccountDetails updatedAccountDetails = bankingOperationsComponent.debitAccount(debitRequestDTO);
+		if(updatedAccountDetails.getError()!=null) {
 			status = HttpStatus.BAD_REQUEST;
 		}
 		return new ResponseEntity<>(updatedAccountDetails,status);
 	}		
+	
+	@PostMapping(value= {"/account/details"},
+			consumes="application/json",produces="application/json")
+	@ApiOperation(value = "Debit customer account")
+	public @ResponseBody ResponseEntity<?> viewAccountDetails(@RequestBody ViewAccountDTO vewAccountDTO){
+		UpdatedAccountDetails updatedAccountDetails = bankingOperationsComponent.getAccountDetails(vewAccountDTO);
+		HttpStatus status = HttpStatus.OK;
+		if(updatedAccountDetails.getError()!=null) {
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return new ResponseEntity<>(updatedAccountDetails,status);
+	}
 
 }

@@ -1,0 +1,33 @@
+package com.banking.operations.request.dto;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class DebitRequestDTOTest {
+
+    private DebitRequestDTO debitRequestDTOUnderTest;
+
+    @Before
+    public void setUp() {
+        debitRequestDTOUnderTest = new DebitRequestDTO();
+    }
+
+    @Test
+    public void setDebitRequest(){
+
+        debitRequestDTOUnderTest.setAccountNumber("123");
+        debitRequestDTOUnderTest.setDebitAmount(100);
+        debitRequestDTOUnderTest.setUsername("user");
+
+        DebitRequestDTO debitRequest = DebitRequestDTO.builder().build();
+        String debitRequestString = debitRequest.toString();
+
+        Assert.assertEquals(debitRequestDTOUnderTest.getAccountNumber(), "123");
+        Assert.assertEquals(debitRequestDTOUnderTest.getUsername(), "user");
+        Assert.assertTrue(debitRequestDTOUnderTest.getDebitAmount() == 100);
+    }
+}
