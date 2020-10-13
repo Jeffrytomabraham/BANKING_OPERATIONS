@@ -1,8 +1,8 @@
 package com.banking.operations.request.dto;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -11,7 +11,7 @@ public class DebitRequestDTOTest {
 
     private DebitRequestDTO debitRequestDTOUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         debitRequestDTOUnderTest = new DebitRequestDTO();
     }

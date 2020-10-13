@@ -3,8 +3,8 @@ package com.banking.operations.response.dto;
 import java.time.LocalDateTime;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -13,7 +13,7 @@ public class UpdatedAccountDetailsTest {
 
     private UpdatedAccountDetails updatedAccountDetailsUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         updatedAccountDetailsUnderTest = new UpdatedAccountDetails();
     }

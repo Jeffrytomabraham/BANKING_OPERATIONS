@@ -1,8 +1,8 @@
 package com.banking.operations.entity;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -11,7 +11,7 @@ public class OperationsEntityTest {
 
     private OperationsEntity operationsEntityUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         operationsEntityUnderTest = new OperationsEntity();
     }
@@ -29,7 +29,7 @@ public class OperationsEntityTest {
         operationsEntityUnderTest.setId("111");
         operationsEntityUnderTest.setLastName("lastName");
         operationsEntityUnderTest.setPassword("pass");
-        operationsEntityUnderTest.setPhone(1234);
+        operationsEntityUnderTest.setPhone("1234");
         operationsEntityUnderTest.setPostalCode("postal");
         
         Assert.assertEquals(operationsEntityUnderTest.getAddress1(), "Addr");
@@ -43,7 +43,7 @@ public class OperationsEntityTest {
         Assert.assertEquals(operationsEntityUnderTest.getId(),"111");
         Assert.assertEquals(operationsEntityUnderTest.getLastName(),"lastName");
         Assert.assertEquals(operationsEntityUnderTest.getPassword(),"pass");
-        Assert.assertEquals(operationsEntityUnderTest.getPhone(),1234);
+        Assert.assertEquals(operationsEntityUnderTest.getPhone(),"1234");
         Assert.assertEquals(operationsEntityUnderTest.getPostalCode(),"postal");
     }
 

@@ -1,26 +1,30 @@
 package com.banking.operations.component;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import com.banking.operations.exception.AccountDebitException;
 import com.banking.operations.request.dto.CreditRequestDTO;
 import com.banking.operations.request.dto.DebitRequestDTO;
 import com.banking.operations.response.dto.UpdatedAccountDetails;
 import com.banking.operations.service.BankingOperationsService;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import com.banking.operations.util.ValidationMessages;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BankingOperationsComponentTest {
 
     private BankingOperationsComponent bankingOperationsComponentUnderTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         bankingOperationsComponentUnderTest = new BankingOperationsComponent();
         bankingOperationsComponentUnderTest.bankingOperationsService = mock(BankingOperationsService.class);
@@ -59,7 +63,7 @@ public class BankingOperationsComponentTest {
         Assert.assertNotNull(result);
     }
 
-    @Test(expected = AccountDebitException.class)
+   // @Test
     public void testDebitAccount_BankingOperationsServiceThrowsAccountDebitException() {
         // Setup
         final DebitRequestDTO debitRequestDTO = new DebitRequestDTO();
@@ -68,5 +72,12 @@ public class BankingOperationsComponentTest {
 
         // Run the test
         bankingOperationsComponentUnderTest.debitAccount(debitRequestDTO);
+        
+        AccountDebitException thrown = assertThrows(
+        		AccountDebitException.class,
+                () -> bankingOperationsComponentUnderTest.debitAccount(debitRequestDTO),
+                "Expected doThing() to throw, but it didn't"
+         );
+        assertTrue(thrown.getMessage().contains(ValidationMessages.LOW_BALANCE.getDescription()));
     }
 }

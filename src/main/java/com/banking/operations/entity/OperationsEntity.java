@@ -29,7 +29,7 @@ public class OperationsEntity {
 	private String postalCode;
 	private String country;
 	private String city;
-	private Number phone;
+	private String phone;
 	private String password;
 	private List<AccountsDTO> accounts;
 }

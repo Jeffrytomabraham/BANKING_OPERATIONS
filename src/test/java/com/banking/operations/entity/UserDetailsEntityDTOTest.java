@@ -3,10 +3,9 @@ package com.banking.operations.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.util.Arrays;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -17,7 +16,7 @@ public class UserDetailsEntityDTOTest {
     
     List<AccountsDTO> accountList = new ArrayList<>();
     
-    @Before
+    @BeforeEach
     public void setUp() {
         userDetailsEntityDTOUnderTest = new UserDetailsEntityDTO();
         AccountsDTO account = new AccountsDTO();
@@ -42,7 +41,7 @@ public class UserDetailsEntityDTOTest {
         userDetailsEntityDTOUnderTest.setId("111");
         userDetailsEntityDTOUnderTest.setLastName("lastName");
         userDetailsEntityDTOUnderTest.setPassword("pass");
-        userDetailsEntityDTOUnderTest.setPhone(1234);
+        userDetailsEntityDTOUnderTest.setPhone("1234");
         userDetailsEntityDTOUnderTest.setPostalCode("postal");
         userDetailsEntityDTOUnderTest.setUserName("username");
         
@@ -57,7 +56,7 @@ public class UserDetailsEntityDTOTest {
         Assert.assertEquals(userDetailsEntityDTOUnderTest.getId(),"111");
         Assert.assertEquals(userDetailsEntityDTOUnderTest.getLastName(),"lastName");
         Assert.assertEquals(userDetailsEntityDTOUnderTest.getPassword(),"pass");
-        Assert.assertEquals(userDetailsEntityDTOUnderTest.getPhone(),1234);
+        Assert.assertEquals(userDetailsEntityDTOUnderTest.getPhone(),"1234");
         Assert.assertEquals(userDetailsEntityDTOUnderTest.getPostalCode(),"postal");
         Assert.assertTrue(userDetailsEntityDTOUnderTest.getAccounts().size()>0);
         Assert.assertEquals(userDetailsEntityDTOUnderTest.getUserName(),"username");
