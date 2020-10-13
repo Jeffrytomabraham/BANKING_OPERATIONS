@@ -22,24 +22,28 @@ public class BankingOperationsDAOImpl implements BankingOperationsDAO{
 	MongoTemplate mongoTemplate;
 	
 	public UserDetailsEntityDTO findUserByUserName(String userName) {
+		log.info("Entering BankingOperationsDAOImpl.findUserByUserName");
+		log.debug("Entering BankingOperationsDAOImpl.findUserByUserName ");
 		Query query = new Query();
 		query.addCriteria(Criteria.where("userName").is(userName));
 		List<UserDetailsEntityDTO> userDetails= mongoTemplate.find(query, UserDetailsEntityDTO.class);
+		log.info("Exiting BankingOperationsDAOImpl.findUserByUserName");
 		if(userDetails.size()>0) {
 			return userDetails.get(0);
 		} else {
-			return new UserDetailsEntityDTO();
+			log.info("Exiting BankingOperationsDAOImpl.findUserByUserName");
+			return null;
 		}
 	}
 	
 	public UserDetailsEntityDTO updateAccountDetails(UserDetailsEntityDTO userDetails) {
-		log.info("Updating user data");
+		log.info("Entering BankingOperationsDAOImpl.updateAccountDetails");
 		log.debug("Entering BankingOperationsDAOImpl.updateAccountDetails for updating user -"+userDetails.getUserName());
 		
 		UserDetailsEntityDTO savedUserDetails= mongoTemplate.save(userDetails);
 		
 		log.debug("Exiting BankingOperationsDAOImpl.updateAccountDetails after updating user -"+userDetails.getUserName());
-		log.info("User data saved");
+		log.info("Exiting BankingOperationsDAOImpl.updateAccountDetails");
 		return savedUserDetails;
 	}
 }
