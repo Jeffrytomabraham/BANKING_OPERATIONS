@@ -1,10 +1,15 @@
 package com.banking.operations.service.impl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,7 @@ import com.banking.operations.entity.UserDetailsEntityDTO;
 import com.banking.operations.exception.AccountDebitException;
 import com.banking.operations.request.dto.CreditRequestDTO;
 import com.banking.operations.request.dto.DebitRequestDTO;
+import com.banking.operations.request.dto.ViewAccountDTO;
 import com.banking.operations.response.dto.UpdatedAccountDetails;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -44,6 +50,7 @@ public class BankingOperationsServiceImplTest {
         account.setAccountNumber("123");
         account.setAccountType("SAVINGS");
         account.setBalance(1000);
+        account.setCreationDate(LocalDateTime.now());
         List<AccountsDTO> accountList = new ArrayList<>();
         accountList.add(account);
         userDetailsEntityDTO.setAccounts(accountList);
@@ -96,20 +103,35 @@ public class BankingOperationsServiceImplTest {
         
     }
 
-   // @Test(expected = AccountDebitException.class)
+    @Test
     public void testDebitAccount_ThrowsAccountDebitException() {
         // Setup
         DebitRequestDTO debitRequestDTO = new DebitRequestDTO();
         debitRequestDTO.setAccountNumber("123");
         debitRequestDTO.setDebitAmount(5000);
         debitRequestDTO.setUsername("username");
-        // Configure BankingOperationsDAO.findUserByUserName(...).
         when(bankingOperationsServiceImplUnderTest.bankingOperationsDAO.findUserByUserName(anyString())).thenReturn(userDetailsEntityDTO);
 
-        // Configure BankingOperationsDAO.updateAccountDetails(...).
         when(bankingOperationsServiceImplUnderTest.bankingOperationsDAO.updateAccountDetails(any(UserDetailsEntityDTO.class))).thenReturn(userDetailsEntityDTO);
 
-        // Run the test
-        bankingOperationsServiceImplUnderTest.debitAccount(debitRequestDTO);
+        Exception exception = assertThrows(AccountDebitException.class, () -> {
+        	bankingOperationsServiceImplUnderTest.debitAccount(debitRequestDTO);
+        });
+        
+    }
+
+    @Test
+    public void testViewAccountDetails() {
+    	ViewAccountDTO viewAccountsDTO = new ViewAccountDTO();
+    	viewAccountsDTO.setAccountNumber("123");
+    	viewAccountsDTO.setUsername("username");
+        
+        when(bankingOperationsServiceImplUnderTest.bankingOperationsDAO.findUserByUserName(anyString())).thenReturn(userDetailsEntityDTO);
+        UpdatedAccountDetails result = bankingOperationsServiceImplUnderTest.getAccountDetails(viewAccountsDTO);
+        assertEquals(result.getAccountNumber(), "123");
+        assertEquals(result.getAccountType(), "SAVINGS");
+        assertNotNull(result.getCreationDate());
+        assertTrue(result.getBalance()==1000);
+        assertTrue(result.getDueAmount()==0);
     }
 }

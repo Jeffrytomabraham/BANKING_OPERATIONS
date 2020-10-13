@@ -1,6 +1,5 @@
 package com.banking.operations.service;
 
-import com.banking.operations.entity.AccountsDTO;
 import com.banking.operations.exception.AccountDebitException;
 import com.banking.operations.exception.AccountDoesNotExistsException;
 import com.banking.operations.exception.UserNotFountException;

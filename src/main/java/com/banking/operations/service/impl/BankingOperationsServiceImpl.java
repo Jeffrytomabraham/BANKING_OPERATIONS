@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.banking.operations.dao.BankingOperationsDAO;
@@ -33,13 +32,13 @@ public class BankingOperationsServiceImpl implements BankingOperationsService{
 	public UpdatedAccountDetails creditAccount(CreditRequestDTO creditRequestDTO) throws AccountDoesNotExistsException,UserNotFountException {
 		UserDetailsEntityDTO operationsEntity = getUserDetails(creditRequestDTO.getUsername());
 		List<Boolean> accountExists = new ArrayList<>();
-		accountExists.set(0, false);
+		accountExists.add(false);
 		List<Double> balance= new ArrayList<>();
 		operationsEntity.getAccounts().stream().filter(acc-> acc.getAccountNumber().equals(creditRequestDTO.getAccountNumber()))
 		.forEach(acc->{
 			acc.setBalance(acc.getBalance() + creditRequestDTO.getCreditAmount());
 			balance.add(acc.getBalance());
-			accountExists.set(0, true);
+			accountExists.add(0, true);
 		});
 		if(!accountExists.get(0)) {
 			throw new AccountDoesNotExistsException(ValidationMessages.INVALID_ACCOUNT.getDescription());
@@ -55,13 +54,13 @@ public class BankingOperationsServiceImpl implements BankingOperationsService{
 		UpdatedAccountDetails updatedAccountDetails= new UpdatedAccountDetails();
 		UserDetailsEntityDTO operationsEntity = getUserDetails(debitRequestDTO.getUsername());
 		List<Boolean> accountExists = new ArrayList<>();
-		accountExists.set(0, false);
+		accountExists.add(false);
 		List<Double> balance= new ArrayList<>();
 		operationsEntity.getAccounts().stream().filter(acc-> acc.getAccountNumber().equals(debitRequestDTO.getAccountNumber()))
 		.forEach(acc->{
 			double balanceAFterDebit = acc.getBalance() - debitRequestDTO.getDebitAmount();
 			balance.add(acc.getBalance());
-			accountExists.set(0, true);
+			accountExists.add(0, true);
 			if(balanceAFterDebit<0) {		
 					 throw new AccountDebitException(ValidationMessages.LOW_BALANCE.getDescription());
 			}

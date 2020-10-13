@@ -21,61 +21,61 @@ public class BankingOperationsComponent {
 	BankingOperationsService bankingOperationsService;
 	
 	public UpdatedAccountDetails creditAccount(CreditRequestDTO creditRequestDTO) {
-		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
 		try {
 			return bankingOperationsService.creditAccount(creditRequestDTO);
 		} catch(AccountDoesNotExistsException ex) {
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.INVALID_ACCOUNT.getCode());
-			error.setMessage(ex.getMessage());
-			updatedAccountDetails.setError(error);
+			return setAccountDoesnotExistsExceptionMessage(ex);
 		} catch(UserNotFountException ex) {
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.INVALID_USER.getCode());
-			error.setMessage(ex.getMessage());
-			updatedAccountDetails.setError(error);
+			return setUserNotFoundExceptionMessage(ex);
 		}
-		return updatedAccountDetails;
 	}
 	
 	public UpdatedAccountDetails debitAccount(DebitRequestDTO debitRequestDTO){
-		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
 		try {
 			return bankingOperationsService.debitAccount(debitRequestDTO);	
 		} catch(AccountDoesNotExistsException ex) {
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.INVALID_ACCOUNT.getCode());
-			error.setMessage(ex.getMessage());
-			updatedAccountDetails.setError(error);
+			return setAccountDoesnotExistsExceptionMessage(ex);
 		} catch(UserNotFountException ex) {
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.INVALID_USER.getCode());
-			error.setMessage(ex.getMessage());
-			updatedAccountDetails.setError(error);
+			return setUserNotFoundExceptionMessage(ex);
 		} catch(AccountDebitException ex) {
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.INVALID_ACCOUNT.getCode());
-			error.setMessage(ex.getMessage());
-			updatedAccountDetails.setError(error);
+			return setAccountDebitExceptionMessage(ex);
 		}
-		return updatedAccountDetails;
 	}
 	
 	public UpdatedAccountDetails getAccountDetails(ViewAccountDTO viewAccountsDTO) {
-		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
 		try {
 			return bankingOperationsService.getAccountDetails(viewAccountsDTO);
 		} catch(AccountDoesNotExistsException ex) {
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.INVALID_ACCOUNT.getCode());
-			error.setMessage(ex.getMessage());
-			updatedAccountDetails.setError(error);
+			return setAccountDoesnotExistsExceptionMessage(ex);
 		} catch(UserNotFountException ex) {
-			ErrorResponse error = new ErrorResponse();
-			error.setErrorCode(ValidationMessages.INVALID_USER.getCode());
-			error.setMessage(ex.getMessage());
-			updatedAccountDetails.setError(error);
+			return setUserNotFoundExceptionMessage(ex);
 		}
+	}
+	
+	private UpdatedAccountDetails setUserNotFoundExceptionMessage(UserNotFountException ex) {
+		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(ValidationMessages.INVALID_USER.getCode());
+		error.setMessage(ex.getMessage());
+		updatedAccountDetails.setError(error);
+		return updatedAccountDetails;
+	}
+	
+	private UpdatedAccountDetails setAccountDoesnotExistsExceptionMessage(AccountDoesNotExistsException ex) {
+		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(ValidationMessages.INVALID_ACCOUNT.getCode());
+		error.setMessage(ex.getMessage());
+		updatedAccountDetails.setError(error);
+		return updatedAccountDetails;
+	}
+	
+	private UpdatedAccountDetails setAccountDebitExceptionMessage(AccountDebitException ex) {
+		UpdatedAccountDetails updatedAccountDetails = new UpdatedAccountDetails();
+		ErrorResponse error = new ErrorResponse();
+		error.setErrorCode(ValidationMessages.LOW_BALANCE.getCode());
+		error.setMessage(ex.getMessage());
+		updatedAccountDetails.setError(error);
 		return updatedAccountDetails;
 	}
 	 
